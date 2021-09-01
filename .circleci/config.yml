@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Current checkout branch
-          command: 'echo ${CURRENT_BRANCH}'
+          command: 'echo ${CIRCLE_BRANCH}'
       - restore_cache:
           key: 'app-{{ checksum "package.json"}}'
       - run:
