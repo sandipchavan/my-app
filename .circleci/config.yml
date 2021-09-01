@@ -8,15 +8,14 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Current checkout branch
-        command: echo ${CURRENT_BRANCH}
+          name: Current checkout branch
+          command: echo ${CURRENT_BRANCH}
       - restore_cache:
-        key: 
-          - app-{{ checksum "package.json"}}
+          key: app-{{ checksum "package.json"}}
       - run:
-        name: installing node module
-        command: npm install
+          name: installing node module
+          command: npm install
       - save_cache:
-        paths:
-          - node_modules
-        key: app-{{ checksum "package.json"}}
+          paths:
+            - node_modules
+          key: app-{{ checksum "package.json"}}
