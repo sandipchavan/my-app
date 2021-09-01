@@ -1,21 +1,20 @@
 version: 2.1
-
 jobs:
   build:
-    docker: 
-      - image: circlecli/node:14.17.0
+    docker:
+      - image: 'circlecli/node:14.17.0'
     working-directory: ~/repo
     steps:
       - checkout
       - run:
           name: Current checkout branch
-          command: echo ${CURRENT_BRANCH}
+          command: 'echo ${CURRENT_BRANCH}'
       - restore_cache:
-          key: app-{{ checksum "package.json"}}
+          key: 'app-{{ checksum "package.json"}}'
       - run:
           name: installing node module
           command: npm install
       - save_cache:
           paths:
             - node_modules
-          key: app-{{ checksum "package.json"}}
+          key: 'app-{{ checksum "package.json"}}'
