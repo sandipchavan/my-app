@@ -54,4 +54,19 @@ jobs:
               echo 'deployed to staging env'
             fi
 
+workflows:
+  build-and-deploy-to-aws-s3:
+    jobs:
+      - build
+      - deploy-to-aws-s3:
+          requires: 
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+                - staging
+                - master
+
+
 
