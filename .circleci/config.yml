@@ -44,10 +44,10 @@ jobs:
       - run:
           name: 'Deploying zip to aws s3'
           command: | 
-            if[ "${CIRCLE_BRANCH}"== "main" ]
+            if[ "${CIRCLE_BRANCH}" == "main" ]
             then
               aws --region ${AWS_REGION} s3 sync ~/repo/build s3://lahipi --delete
-            elif[ "${CIRCLE_BRANCH}"== "master" ]
+            elif[ "${CIRCLE_BRANCH}" == "master" ]
             then
               echo 'deployed to prod env'
             else
