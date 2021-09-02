@@ -18,3 +18,40 @@ jobs:
           paths:
             - node_modules
           key: 'app-{{ checksum "package.json"}}'
+  deploy-to-aws-s3:
+    docker:
+      - image: 'cimg/node:14.17'
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Current checkout branch
+          command: 'echo ${CIRCLE_BRANCH}'
+      - run:
+          name: Install AWS cli
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install -y aws-cli
+            sudo apt-get install -y python-pip python-dev build-essential
+      - run:
+          name: zipping the build folder
+          command: |
+            npm install 
+            npm run build
+            cd build
+            zip ../build.zip -r *.[^.]*
+            echo "build and zipping successful"
+      - run:
+          name: 'Deploying zip to aws s3'
+          command: | 
+            if[ "${CIRCLE_BRANCH}"== "develop"]
+            then
+              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://lahipi --delete
+            elif[ "${CIRCLE_BRANCH}"== "master"]
+            then
+              echo 'deployed to prod env'
+            else
+              echo 'deployed to staging env'
+            fi
+
+
